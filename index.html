@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia de Skills e MCPs para Programar com IA</title>
+<meta name="description" content="Resumo, instalação e uso de skills, MCPs e ferramentas de design para criar sistemas confiáveis, seguros e bonitos com IA.">
+<style>
+:root{
+  --bg:#0f1115;--panel:#171a21;--panel2:#1d212a;--line:#2a2f3a;--text:#e6e8ee;--muted:#9aa3b2;
+  --accent:#7c9cff;--ok:#4cc38a;--warn:#f0b84a;--bad:#ef6f6f;--code:#0b0d11;
+}
+:root[data-theme="light"]{
+  --bg:#f6f7fa;--panel:#ffffff;--panel2:#f0f2f7;--line:#dfe3ec;--text:#1a1d26;--muted:#5b6475;
+  --accent:#3b5bdb;--ok:#18864b;--warn:#a86a00;--bad:#c53030;--code:#eef0f6;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;gap:16px;align-items:center;justify-content:space-between;padding-top:12px;padding-bottom:12px}
+header.top nav{display:flex;gap:16px;flex-wrap:wrap;font-size:14px}
+header.top nav a{color:var(--muted);text-decoration:none}
+header.top nav a:hover{color:var(--text)}
+button{font:inherit;cursor:pointer}
+.theme{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+.hero{padding:56px 0 28px}
+.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+.hero p{color:var(--muted);max-width:720px;margin:0}
+section{padding:32px 0}
+h2{font-size:26px;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 20px}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
+input[type=search]{flex:1;min-width:220px;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font:inherit}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+.chip[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.card h3{margin:0;font-size:18px}
+.card h3 a{color:inherit;text-decoration:none}
+.card h3 a:hover{color:var(--accent)}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:12px;padding:2px 8px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--muted)}
+.tag.p3{color:var(--ok);border-color:var(--ok)}
+.tag.p2{color:var(--warn);border-color:var(--warn)}
+.card p{margin:0;color:var(--muted);font-size:15px}
+details{border-top:1px solid var(--line);padding-top:8px}
+summary{cursor:pointer;color:var(--accent);font-size:14px}
+details ul{margin:8px 0 0;padding-left:20px;font-size:14px;color:var(--text)}
+details li{margin:3px 0}
+.use{font-size:14px;color:var(--text)}
+.use b{color:var(--accent)}
+.warn{font-size:13px;color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,transparent);border-left:3px solid var(--warn);padding:6px 10px;border-radius:4px}
+.cmd{position:relative;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:8px 44px 8px 10px;font:13px/1.5 ui-monospace,Consolas,monospace;white-space:pre-wrap;word-break:break-all}
+.cmd button{position:absolute;top:6px;right:6px;background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:2px 7px;font-size:12px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--panel2);font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+tr:last-child td{border-bottom:0}
+.tablewrap{overflow-x:auto}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.box h3{margin:0 0 8px}
+.check{list-style:none;padding:0;margin:0}
+.check li{padding:6px 0;border-bottom:1px solid var(--line)}
+.check li:last-child{border:0}
+.check input{margin-right:8px}
+.check li.done{color:var(--muted);text-decoration:line-through}
+.empty{display:none;color:var(--muted);padding:20px;text-align:center}
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-size:14px}
+.when{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+.when div{border-radius:8px;padding:8px 10px;background:var(--panel2);border:1px solid var(--line)}
+.when .yes{border-left:3px solid var(--ok)}
+.when .no{border-left:3px solid var(--bad)}
+.when b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.ex{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;font-size:14px}
+.ex .h{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--accent);font-weight:600}
+.ex .res{color:var(--muted)}
+.note{font-size:13px;color:var(--muted);border-left:3px solid var(--accent);padding:6px 12px;margin:0 0 18px}
+.play{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;padding:4px 18px}
+.play>summary{font-size:17px;font-weight:600;color:var(--text);padding:12px 0}
+.play ol{padding-left:22px}
+.play li{margin:10px 0}
+.play li .cmd{margin-top:6px}
+.play .why{color:var(--muted);font-size:14px}
+td code,li code{background:var(--code);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:13px}
+@media (max-width:560px){.grid{grid-template-columns:1fr}.when{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <strong>Guia IA Dev</strong>
+    <nav>
+      <a href="#stack">Stack</a>
+      <a href="#situacoes">Qual usar</a>
+      <a href="#playbooks">Passo a passo</a>
+      <a href="#ferramentas">Ferramentas</a>
+      <a href="#fluxo">Fluxo</a>
+      <a href="#checklist">Checklist</a>
+      <a href="#riscos">Riscos</a>
+    </nav>
+    <button class="theme" id="theme" aria-label="Alternar tema">Tema</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <h1>Skills, MCPs e ferramentas para criar sistemas confiáveis com IA</h1>
+    <p>Resumo de 20 ferramentas pesquisadas em seus READMEs e sites oficiais: o que cada uma faz, como instalar e onde usar no desenvolvimento, com foco em produção, segurança e interface bonita. Pesquisa feita em 20/10/2026.</p>
+  </div>
+
+  <section id="stack">
+    <h2>Stack recomendada</h2>
+    <p class="sub">Você não precisa de tudo. Instalar tudo sobrepõe skills (TDD, review e plano aparecem em várias) e gasta contexto.</p>
+    <div class="cols">
+      <div class="box">
+        <h3>Núcleo</h3>
+        <ul>
+          <li><b>agent-skills</b>: processo completo de engenharia</li>
+          <li><b>Context7</b>: documentação atual</li>
+          <li><b>Karpathy skills</b>: disciplina de escopo</li>
+          <li>Mais <b>uma</b> entre Superpowers e mattpocock</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Segurança</h3>
+        <ul>
+          <li><b>Cloudflare security-audit</b>: audita o código</li>
+          <li><b>Strix</b>: ataca a app em staging</li>
+          <li>Rode as duas antes do lançamento e depois em CI</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Visual</h3>
+        <ul>
+          <li><b>21st.dev MCP</b>: componentes</li>
+          <li><b>godly.design</b>: referências</li>
+          <li><b>transitions.dev</b>: animações e acessibilidade</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="situacoes">
+    <h2>Qual usar em cada situação</h2>
+    <p class="sub">Procure o que você está tentando fazer e veja a ferramenta indicada.</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>Situação</th><th>Use</th><th>Por quê</th></tr></thead>
+      <tbody id="situ"></tbody>
+    </table>
+    </div>
+  </section>
+
+  <section id="playbooks">
+    <h2>Guia passo a passo</h2>
+    <p class="sub">Receitas completas para as situações mais comuns. Cada passo traz o comando ou prompt para copiar.</p>
+    <p class="note">Os exemplos foram montados a partir dos comandos documentados em cada projeto. A saída real do agente varia conforme o modelo e o seu código; ajuste nomes e detalhes ao seu caso.</p>
+    <div id="plays"></div>
+  </section>
+
+  <section id="ferramentas">
+    <h2>Ferramentas</h2>
+    <p class="sub">Use a busca ou os filtros. Cada card tem quando usar, quando evitar, um exemplo e detalhes.</p>
+    <div class="tools">
+      <input type="search" id="q" placeholder="Buscar (ex.: segurança, TDD, componentes)" aria-label="Buscar">
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="grid" id="grid" style="margin-top:18px"></div>
+    <div class="empty" id="empty">Nada encontrado.</div>
+  </section>
+
+  <section id="fluxo">
+    <h2>Fluxo de um projeto novo</h2>
+    <p class="sub">Da ideia ao lançamento, qual ferramenta entra em cada etapa.</p>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>Etapa</th><th>Ferramenta</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Entender o problema</td><td><code>grill-with-docs</code> (mattpocock) ou <code>brainstorming</code> (Superpowers)</td></tr>
+        <tr><td>2</td><td>Especificar e planejar</td><td><code>/spec</code> e <code>/plan</code> (agent-skills)</td></tr>
+        <tr><td>3</td><td>Referência visual</td><td>godly.design + 21st.dev MCP</td></tr>
+        <tr><td>4</td><td>Implementar</td><td><code>/build</code> com TDD e Context7 ativo</td></tr>
+        <tr><td>5</td><td>Animações</td><td>transitions.dev (checar <code>prefers-reduced-motion</code>)</td></tr>
+        <tr><td>6</td><td>Revisar</td><td><code>/review</code>; opcional <code>/octo:review</code> para segunda opinião</td></tr>
+        <tr><td>7</td><td>Segurança</td><td>security-audit (código), depois Strix (app em staging)</td></tr>
+        <tr><td>8</td><td>Performance</td><td><code>/webperf</code></td></tr>
+        <tr><td>9</td><td>Lançar</td><td><code>/ship</code>: checklist, rollout em etapas, rollback e observabilidade</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </section>
+
+  <section id="checklist">
+    <h2>Checklist de produção</h2>
+    <p class="sub">Marcações ficam salvas neste navegador.</p>
+    <div class="box"><ul class="check" id="check"></ul></div>
+  </section>
+
+  <section id="riscos">
+    <h2>Riscos ao usar essas ferramentas</h2>
+    <div class="cols">
+      <div class="box"><h3>Código de terceiros</h3><p>Skills, plugins e hooks rodam com as suas permissões. Leia o repositório antes de instalar e fixe versões.</p></div>
+      <div class="box"><h3>Acesso a dados</h3><p>MCPs, memória e gateways veem seu código e prompts. Não dê acesso a pastas com segredos e cuide de projetos de clientes.</p></div>
+      <div class="box"><h3>Pentest</h3><p>Strix ataca de verdade. Só em sistemas seus ou com autorização escrita, e de preferência em staging.</p></div>
+      <div class="box"><h3>Revisão humana</h3><p>A IA não substitui revisão nas partes críticas: autenticação, pagamento e permissões.</p></div>
+      <div class="box"><h3>Números do marketing</h3><p>Estrelas e percentuais de economia vêm dos próprios READMEs. Meça no seu caso.</p></div>
+      <div class="box"><h3>Não confirmado</h3><p>Funcionamento do animos.app, instalação da skill do transitions.dev e comandos completos do OmniRoute não ficaram claros nas páginas lidas.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Conteúdo baseado nos READMEs e sites oficiais das ferramentas, lidos em 20/10/2026. Comandos podem mudar; confira o repositório de cada projeto antes de instalar.</div>
+</footer>
+
+<script>
+const TOOLS = [
+{
+  name:"addyosmani/agent-skills", url:"https://github.com/addyosmani/agent-skills", cat:"Processo", prio:3,
+  desc:"Skills de engenharia de nível produção: cada fase do ciclo (definir, planejar, construir, verificar, revisar, entregar) vira um fluxo com gates de qualidade.",
+  use:"Para cada funcionalidade: /spec → /plan → /build → /test → /review → /ship. Antes de lançar, rode /webperf e a skill de segurança.",
+  install:["/plugin marketplace add addyosmani/agent-skills","/plugin install agent-skills@addy-agent-skills"],
+  more:["9 comandos: /spec, /plan, /build, /test, /constraints, /review, /webperf, /code-simplify, /ship","/build auto implementa todo o plano após uma aprovação, com TDD e commit por tarefa","25 skills, entre elas security-and-hardening, ci-cd-and-automation, observability-and-instrumentation, shipping-and-launch","4 personas de revisão: code-reviewer, test-engineer, security-auditor, web-performance-auditor"],
+  warn:"/review colide com o comando nativo; use /agent-skills:review."
+},
+{
+  name:"obra/superpowers", url:"https://github.com/obra/superpowers", cat:"Processo", prio:3,
+  desc:"Metodologia com skills acionadas automaticamente: o agente pergunta o que você quer, desenha, planeja e executa com subagentes e revisão.",
+  use:"Bom para funcionalidades grandes e vagas. A regra de verificar antes de declarar sucesso reduz entregas que só parecem prontas.",
+  install:["/plugin install superpowers@claude-plugins-official"],
+  more:["Fluxo: brainstorming → git worktrees → writing-plans → subagent-driven-development → TDD → code review → finishing-a-development-branch","Também: systematic-debugging, verification-before-completion, dispatching-parallel-agents, writing-skills"],
+  warn:"Escolha Superpowers ou mattpocock/skills, não as duas: as skills se sobrepõem."
+},
+{
+  name:"mattpocock/skills", url:"https://github.com/mattpocock/skills", cat:"Processo", prio:3,
+  desc:"Skills contra o “vibe coding”: alinhar com o agente antes de codar, TDD, diagnóstico disciplinado de bugs, specs e tickets.",
+  use:"Comece projetos novos com grill-with-docs. O glossário de domínio deixa o agente mais preciso. Rode improve-codebase-architecture de tempos em tempos.",
+  install:["claude plugin install mattpocock-skills@claude-plugins-official","/setup-matt-pocock-skills"],
+  more:["grill-me / grill-with-docs: entrevista até fechar dúvidas e atualiza glossário e ADRs","to-spec, to-tickets, implement-spec (subagentes em paralelo)","tdd, diagnosing-bugs, code-review (padrões e fidelidade à spec), pr","handoff, retro, wizard"],
+  warn:"O setup roda uma vez por repositório."
+},
+{
+  name:"andrej-karpathy-skills", url:"https://github.com/multica-ai/andrej-karpathy-skills", cat:"Processo", prio:2,
+  desc:"Um CLAUDE.md com 4 princípios contra falhas típicas de LLM: assumir sem checar, complicar demais e mexer no que não foi pedido.",
+  use:"Leve e quase sem custo, bom para ficar sempre ligado. Resultado esperado: diffs menores e PRs mais limpos.",
+  install:["/plugin marketplace add forrestchang/andrej-karpathy-skills","/plugin install andrej-karpathy-skills@karpathy-skills"],
+  more:["Pense antes de codar","Simplicidade primeiro","Mudanças cirúrgicas","Execução orientada a objetivos verificáveis"],
+  warn:"Alternativa: copiar o conteúdo para o CLAUDE.md do projeto."
+},
+{
+  name:"claude-code-setup (oficial Anthropic)", url:"https://github.com/anthropics/claude-plugins-official/tree/main/plugins/claude-code-setup", cat:"Processo", prio:2,
+  desc:"Analisa o projeto (somente leitura) e recomenda hooks, skills, servidores MCP, subagentes e slash commands.",
+  use:"Rode uma vez em cada projeto: peça “recommend automations for this project”. Hooks como bloquear edição de .env ajudam na segurança.",
+  install:["Instale pelo marketplace oficial: /plugin (procure claude-code-setup)"],
+  more:["Sugere 1 a 2 automações por categoria","Exemplos: context7, Playwright, auto-format, revisores de segurança e performance"],
+  warn:"A página não trazia o comando exato de instalação."
+},
+{
+  name:"claude-octopus", url:"https://github.com/nyldn/claude-octopus", cat:"Processo", prio:1,
+  desc:"Roda a mesma tarefa em vários modelos (Claude, Codex, Copilot, Ollama, Perplexity) e sinaliza divergências, com gate de consenso de 75%.",
+  use:"Segunda opinião em decisões de arquitetura e em revisão de partes críticas, como pagamento e autenticação.",
+  install:["claude plugin marketplace add https://github.com/nyldn/plugins.git","claude plugin install octo@nyldn-plugins","/octo:setup"],
+  more:["/octo:embrace: ciclo completo em 4 fases","/octo:review, /octo:security, /octo:tdd, /octo:debate, /octo:research","Funciona só com Claude, mas o multi-modelo exige provedores extras"],
+  warn:"No Windows, o README manda usar o Claude Code dentro do WSL. Exige Claude Code 2.1.14 ou superior. Custa mais tokens."
+},
+{
+  name:"ai-everything-claude-code (ECC)", url:"https://github.com/kgx/ai-everything-claude-code", cat:"Processo", prio:1,
+  desc:"Sistema grande: 16 agentes, 65 skills, 40 comandos, hooks, regras por linguagem e auditoria da configuração do Claude Code.",
+  use:"Só se quiser um sistema único em vez de montar o seu. Fluxo: /plan → /tdd → /code-review → /security-scan.",
+  install:["/plugin marketplace add affaan-m/everything-claude-code","/plugin install everything-claude-code@everything-claude-code"],
+  more:["As rules precisam de instalação manual: ./install.sh typescript","Mantenha menos de 10 MCPs ativos"],
+  warn:"Este link é um fork com 20 estrelas. O original é affaan-m/everything-claude-code. É pesado e sobrepõe os outros."
+},
+{
+  name:"one-skill-to-rule-them-all (task-observer)", url:"https://github.com/rebelytics/one-skill-to-rule-them-all", cat:"Processo", prio:1,
+  desc:"Meta-skill que observa suas sessões, nota correções e padrões repetidos e propõe melhorias em skills. Você revisa tudo.",
+  use:"Útil mais tarde, quando você tiver várias skills próprias. Com poucas, o benefício é pequeno.",
+  install:["npx skills add rebelytics/one-skill-to-rule-them-all --skill task-observer"],
+  more:["Não altera skills instaladas sozinha","Exige instrução no CLAUDE.md para ativar"],
+  warn:"Só instalar não basta: sem a instrução no CLAUDE.md ela pode não ser acionada."
+},
+{
+  name:"i-have-adhd", url:"https://github.com/ayghri/i-have-adhd", cat:"Processo", prio:1,
+  desc:"Muda o formato das respostas: começa pela ação, passos numerados, listas de até 5 itens e um único próximo passo.",
+  use:"É preferência de estilo, não afeta a qualidade do código. Use se respostas longas atrapalham seu foco.",
+  install:["Peça ao CLI: instale a skill i-have-adhd de https://github.com/ayghri/i-have-adhd","/i-have-adhd"],
+  more:["Sem introdução, recapitulação ou despedida","Estimativas de tempo em minutos"],
+  warn:""
+},
+{
+  name:"cloudflare/security-audit-skill", url:"https://github.com/cloudflare/security-audit-skill", cat:"Segurança", prio:3,
+  desc:"Transforma o agente em auditor de segurança: 6 fases com agentes isolados e validação adversarial de cada achado.",
+  use:"No repositório, peça “security audit this codebase”. Saída em REPORT.md, FINDINGS-DETAIL.md e NEEDS-VALIDATION.md. Rode mais de uma vez.",
+  install:["npx skills add https://github.com/cloudflare/security-audit-skill --skill security-audit"],
+  more:["Cobre memória, apps com LLM, web/auth, client-side, cadeia de suprimentos, nuvem, webhooks e isolamento de tenants","Quem valida nunca é quem achou","Uma execução acha cerca de metade do que várias achariam (segundo os autores)","Requer Node.js"],
+  warn:"Para executar código do alvo, exige sandbox sem rede. Sem ele, os achados ficam como needs_validation."
+},
+{
+  name:"usestrix/strix", url:"https://github.com/usestrix/strix", cat:"Segurança", prio:3,
+  desc:"Pentest com IA: agentes autônomos executam a aplicação, procuram vulnerabilidades e provam com PoC.",
+  use:"Rode contra staging: strix --target https://staging.seu-app.com. Modo -n para CI; retorna erro se achar falhas. Há integração com GitHub Actions.",
+  install:["pipx install strix-agent","export STRIX_LLM=<modelo>","export LLM_API_KEY=<sua-chave>"],
+  more:["IDOR, bypass de auth, injeções, SSRF, XXE, RCE, XSS, CSRF, JWT, lógica de negócio","APIs via OpenAPI, Swagger ou Postman","Precisa de Docker e chave de um provedor de LLM"],
+  warn:"Use somente em sistemas seus ou com autorização escrita. A ferramenta ataca ativamente o alvo. Nunca contra produção com dados reais."
+},
+{
+  name:"Context7 (Upstash)", url:"https://github.com/upstash/context7", cat:"MCP e contexto", prio:3,
+  desc:"MCP que entrega documentação atual e específica por versão, evitando APIs inventadas e código desatualizado.",
+  use:"Adicione “use context7” ao prompt, ou “use library /supabase/supabase”. Dica: regra no CLAUDE.md para usar automaticamente.",
+  install:["npx ctx7 setup --claude"],
+  more:["Ferramentas: resolve-library-id e query-docs","Chave gratuita em context7.com/dashboard","Requer Node.js 22.13 ou superior"],
+  warn:""
+},
+{
+  name:"21st.dev MCP (ex-Magic MCP)", url:"https://github.com/21st-dev/magic-mcp", cat:"Design", prio:3,
+  desc:"Busca em mais de 10.000 componentes React/Tailwind e geração de UI com IA direto no editor.",
+  use:"Peça em linguagem natural: “busque no 21st um pricing table”. Os gatilhos antigos /ui e /21 não existem mais.",
+  install:["npx @21st-dev/cli@latest init --client claude"],
+  more:["Ferramentas: search, get_component, generate, iterate_generation","Chave em 21st.dev/mcp","generate só funciona com acesso à IA ativo"],
+  warn:"Revise acessibilidade e dependências do código gerado antes de ir para produção."
+},
+{
+  name:"claude-mem", url:"https://github.com/thedotmack/claude-mem", cat:"MCP e contexto", prio:2,
+  desc:"Memória persistente: captura o que o agente faz, comprime e reinjeta contexto relevante em sessões futuras.",
+  use:"Funciona sozinho depois de instalado. Pesquise o histórico em linguagem natural. Diagnóstico: npx claude-mem doctor.",
+  install:["npx claude-mem install"],
+  more:["SQLite com busca semântica e viewer local em /viewer","Conteúdo em tags <private> não é guardado","Requer Node 20 ou superior"],
+  warn:"Não use npm install -g (só instala a biblioteca). Nunca deixe segredos passarem pelas sessões. O README promove um token de terceiros que não faz parte da ferramenta."
+},
+{
+  name:"Headroom", url:"https://github.com/headroomlabs-ai/headroom", cat:"Custo", prio:1,
+  desc:"Comprime saídas de ferramentas, logs, JSON e histórico antes de enviar ao LLM. Diz reduzir 60 a 95% em JSON e cerca de 20% em agentes de código.",
+  use:"Útil em sessões longas e análise de logs. Em conversas curtas quase não muda nada.",
+  install:["uv tool install --python 3.13 \"headroom-ai[all]\"","headroom doctor"],
+  more:["Biblioteca Python e TypeScript, proxy local e servidor MCP","Compressão reversível: originais ficam em cache local","Python 3.10 ou superior"],
+  warn:"A telemetria anônima vem ligada. Desligue com HEADROOM_TELEMETRY=off."
+},
+{
+  name:"OmniRoute", url:"https://github.com/diegosouzapw/OmniRoute", cat:"Custo", prio:1,
+  desc:"Gateway local com endpoint compatível com OpenAI que roteia para centenas de provedores, com fallback automático.",
+  use:"Troca de modelo quando acaba a cota e reduz custo. Aponte a ferramenta para localhost:20128/v1 com o modelo auto.",
+  install:["npm install -g omniroute"],
+  more:["20 estratégias de roteamento","Compressão de tokens","Painel web e servidor MCP"],
+  warn:"Guarda suas chaves de vários provedores: trate como software sensível. Os “tokens grátis” são estimativas de terceiros e usar contas gratuitas de forma agregada pode violar termos. O comando de instalação acima é o nome do pacote npm citado na página; confira o README."
+},
+{
+  name:"godly.design", url:"https://godly.design", cat:"Design", prio:2,
+  desc:"Galeria curada dos sites e interfaces mais bem desenhados, com categorias como hero, CTA, footer, logos e templates.",
+  use:"Escolha 2 ou 3 sites, use “Copy as Markdown” ou “Open in Claude” e peça: reproduza a estrutura e a hierarquia com minha marca e minhas cores.",
+  install:[],
+  more:["Busca com ⌘K","Trending e categorias"],
+  warn:"Copiar estrutura é inspiração. Não copie textos, imagens ou identidade de terceiros."
+},
+{
+  name:"transitions.dev", url:"https://transitions.dev", cat:"Design", prio:2,
+  desc:"Biblioteca de 43+ transições prontas (toasts, modais, abas, spinners), Builder e Motion Skill para o agente.",
+  use:"Rode npx transitions-agent no projeto: dá nota de motion de 0 a 100 e acha problemas como transition: all e falta de prefers-reduced-motion. Correções vêm como diff.",
+  install:["npx transitions-agent"],
+  more:["Há GitHub Action que bloqueia merge abaixo de uma nota","Alguns itens são do plano Pro","prefers-reduced-motion é questão de acessibilidade"],
+  warn:"A página não detalhou a instalação da skill para Claude Code; veja transitions.dev/skill.html#installation."
+},
+{
+  name:"animos.app", url:"https://animos.app", cat:"Design", prio:1,
+  desc:"Descrito na página como “Motion templates for design showcases”: templates de movimento para exibir designs.",
+  use:"Marketing e lançamento. Teste direto no site.",
+  install:[],
+  more:[],
+  warn:"A página não trouxe detalhes, preço ou instruções. A ideia de transformar print do app em vídeo no navegador não pôde ser confirmada."
+},
+{
+  name:"deck.gallery", url:"https://deck.gallery", cat:"Design", prio:1,
+  desc:"Curadoria de decks, relatórios e guias de marca bem desenhados, de empresas como Nike, Palantir e Apple.",
+  use:"Referência de layout para apresentações e pitch. Não afeta o sistema.",
+  install:[],
+  more:["Categorias: Pitch, Sales, Report, Guideline, Talks e outras","Parte é grátis; plano Pro custa US$ 12/mês no anual e dá acesso a 200+ decks"],
+  warn:""
+}
+];
+
+const CHECK = [
+ "Testes automatizados passando em CI",
+ "Segredos fora do código (variáveis de ambiente)",
+ "Auditoria de segurança rodada mais de uma vez",
+ "Pentest em staging com autorização",
+ "Dependências auditadas",
+ "Logs estruturados, métricas e alertas",
+ "Plano de rollback testado",
+ "Backup e restauração testados",
+ "Acessibilidade: contraste, teclado, prefers-reduced-motion",
+ "Revisão humana de autenticação, pagamento e permissões"
+];
+
+/* Quando usar, quando evitar e exemplo por ferramenta (chave = início do nome) */
+const EXTRA = {
+"addyosmani":{
+ yes:"Feature ou módulo com requisito razoavelmente claro, em projeto novo ou existente. Você quer processo repetível com testes e checklist de lançamento.",
+ no:"Ideia ainda vaga (alinhe antes com grill-me ou brainstorming) ou ajuste de uma linha.",
+ ex:{t:"Adicionar login com e-mail e senha a um app web",
+  s:["/spec Login com e-mail e senha, recuperação de senha por e-mail, sessão em cookie httpOnly, bloqueio após 5 tentativas","/plan","/build auto","/review","/ship"],
+  r:"Você aprova a spec e o plano; o agente implementa tarefa por tarefa com TDD e um commit por tarefa, parando se algo falhar ou for arriscado, e no fim /ship traz o checklist de lançamento com rollback."}},
+"obra":{
+ yes:"Funcionalidade grande e ainda mal definida; você quer que o agente pergunte, projete e divida o trabalho antes de codar.",
+ no:"Tarefas pequenas e óbvias; o ritual de plano e revisão fica pesado demais.",
+ ex:{t:"Painel de relatórios mensais para a diretoria",
+  s:["Quero criar um painel que mostre vendas por mês e por vendedor, exportável em PDF"],
+  r:"As skills disparam sozinhas: o agente faz perguntas (brainstorming), mostra o design em partes para aprovação, cria uma branch isolada em worktree, escreve um plano com tarefas de 2 a 5 minutos e executa com um subagente por tarefa, revisando entre elas."}},
+"mattpocock":{
+ yes:"Começo de projeto ou feature em que o risco é construir a coisa errada. Também bugs difíceis e manutenção de longo prazo.",
+ no:"Se você já usa Superpowers: as duas fazem papéis parecidos, escolha uma.",
+ ex:{t:"Sistema de agendamento para uma clínica",
+  s:["/setup-matt-pocock-skills","/grill-with-docs Quero um sistema de agendamento para clínica com vários profissionais","/to-spec","/to-tickets","/implement-spec"],
+  r:"O agente te entrevista até fechar as ramificações e atualiza GLOSSARY.md e as ADRs (termos como “consulta”, “encaixe”, “profissional” ficam definidos). Depois vira spec, tickets verticais com dependências e implementação com subagentes em paralelo."}},
+"andrej":{
+ yes:"Sempre. É leve e reduz diffs inchados, abstrações desnecessárias e mudanças fora do pedido.",
+ no:"Tarefas triviais, como corrigir um erro de digitação, não precisam de todo o rigor (o próprio projeto avisa).",
+ ex:{t:"Corrigir um bug em que o botão “Finalizar pedido” cria o pedido duas vezes",
+  s:["Corrija o bug do pedido duplicado ao clicar duas vezes em Finalizar pedido"],
+  r:"Com as regras ativas, o esperado é: declarar suposições, escrever primeiro um teste que reproduz o bug, mudar só o necessário, e apenas mencionar código morto que encontrar em vez de apagá-lo."}},
+"claude-code-setup":{
+ yes:"Logo depois de abrir um projeto novo ou herdado, para descobrir hooks, MCPs e subagentes úteis.",
+ no:"Não aplica nada sozinho; é só recomendação. Não substitui a decisão sobre segurança.",
+ ex:{t:"Projeto Next.js recém-clonado",
+  s:["recommend automations for this project"],
+  r:"Sugestões típicas descritas no plugin: Context7 como MCP de documentação, Playwright para frontend, hook que bloqueia edição de arquivos sensíveis e auto-formatação, subagentes revisores de segurança e performance."}},
+"claude-octopus":{
+ yes:"Decisões caras de errar: arquitetura, módulo de pagamento, autenticação. Quando uma segunda opinião de outro modelo vale o custo.",
+ no:"Tarefas rotineiras (custa mais tokens) ou se você está no Windows sem WSL.",
+ ex:{t:"Revisar o módulo de pagamentos antes do lançamento",
+  s:["/octo:review o módulo src/payments","/octo:debate Monolito modular ou microserviços para uma equipe de 3 pessoas?"],
+  r:"Vários modelos analisam a mesma coisa e o plugin sinaliza divergências, com gate de consenso de 75%. Quando os modelos discordam, olhe com mais atenção."}},
+"ai-everything":{
+ yes:"Você quer um sistema pronto e integrado em vez de montar o seu, e aceita a complexidade.",
+ no:"Se já usa agent-skills ou Superpowers: vai sobrepor. Prefira o repositório original.",
+ ex:{t:"Nova funcionalidade de autenticação",
+  s:["/everything-claude-code:plan \"Add user authentication\"","/tdd","/code-review","/security-scan"],
+  r:"Fluxo oficial do README: plano, depois teste primeiro, depois revisão. Antes de produção, também /e2e e /test-coverage."}},
+"one-skill":{
+ yes:"Você já tem várias skills próprias e corrige o agente repetidamente nas mesmas coisas.",
+ no:"Biblioteca pequena de skills: a memória nativa e a edição direta bastam.",
+ ex:{t:"Você corrigiu 4 vezes o formato de mensagens de commit",
+  s:["Any observations logged?"],
+  r:"Ao fim da sessão, a skill lista o padrão observado e propõe uma mudança na skill de commits, em cópia para você revisar. Nada é alterado até você instalar o pacote atualizado."}},
+"i-have-adhd":{
+ yes:"Respostas longas te dispersam e você prefere ação direta e um único próximo passo.",
+ no:"Quando você quer explicações longas e detalhadas.",
+ ex:{t:"Pedir ajuda para colocar o app no ar",
+  s:["/i-have-adhd","Como subo meu app para produção?"],
+  r:"A resposta vem sem introdução: passos numerados, comando para testar e um próximo passo concreto, com estimativa em minutos."}},
+"cloudflare":{
+ yes:"Antes de lançar e a cada mudança grande. Para revisar código de autenticação, webhooks, dependências e isolamento entre clientes.",
+ no:"Não substitui pentest na aplicação rodando. Sem sandbox, ele não executa código e deixa achados como needs_validation.",
+ ex:{t:"Auditar o repositório antes do primeiro lançamento",
+  s:["security audit this codebase","Corrija os achados confirmados em REPORT.md","security audit this codebase"],
+  r:"Saem REPORT.md, FINDINGS-DETAIL.md e NEEDS-VALIDATION.md. Rode de novo depois das correções: os autores dizem que várias execuções acham mais que uma só."}},
+"usestrix":{
+ yes:"Testar a aplicação rodando em staging: permissões, IDOR, injeções, sessão e JWT. Também em CI a cada pull request.",
+ no:"Nunca contra sistemas de terceiros sem autorização escrita, nem contra produção com dados reais.",
+ ex:{t:"Pentest do ambiente de staging com um usuário de teste",
+  s:["strix --target https://staging.meuapp.com --instruction \"Faça login com o usuário de teste qa@exemplo.com e tente acessar dados de outras contas\"","strix --target ./app -n"],
+  r:"O primeiro é um teste com credenciais (grey-box); o segundo roda sem interação e retorna código de saída diferente de zero se achar vulnerabilidades, bom para CI. Resultados ficam em strix_runs/."}},
+"Context7":{
+ yes:"Sempre que usar biblioteca que muda rápido (Next.js, Supabase, Tailwind, ORMs) ou quando o agente inventa funções que não existem.",
+ no:"Código sem dependências externas.",
+ ex:{t:"Middleware de autenticação no Next.js",
+  s:["Crie o middleware de autenticação com cookies no Next.js 16. use context7","Configure o cliente do banco. use library /supabase/supabase"],
+  r:"O agente consulta a documentação da versão pedida (resolve-library-id e query-docs) antes de escrever o código, em vez de confiar na memória do modelo."}},
+"21st":{
+ yes:"Montar telas rápido com componentes React/Tailwind já prontos: pricing, hero, tabelas, formulários.",
+ no:"Se o projeto não usa React/Tailwind, ou como código final sem revisão.",
+ ex:{t:"Página de preços com 3 planos",
+  s:["Busque no 21st um componente de pricing table com 3 planos e adapte para as cores da minha marca"],
+  r:"O agente usa search e get_component para trazer opções e adapta o código. Revise acessibilidade (contraste, foco) e dependências antes de publicar."}},
+"claude-mem":{
+ yes:"Projetos longos com várias sessões, em que você perde o contexto de decisões anteriores.",
+ no:"Projetos com segredos ou dados de clientes sensíveis, a menos que você revise o que é armazenado.",
+ ex:{t:"Retomar o projeto na semana seguinte",
+  s:["O que decidimos sobre o esquema da tabela de pagamentos?"],
+  r:"O contexto de sessões anteriores é injetado sozinho e você pode buscar o histórico pela skill mem-search. Use tags <private> em tudo que não deve ser guardado."}},
+"Headroom":{
+ yes:"Sessões longas com muita saída de ferramenta: logs, JSON enorme, buscas em código.",
+ no:"Conversas curtas ou textos em prosa; quase não há ganho.",
+ ex:{t:"Investigar um incidente lendo logs grandes",
+  s:["headroom proxy --port 8787","headroom dashboard"],
+  r:"O proxy comprime o que vai ao modelo e o dashboard mostra a economia. Confira também a telemetria, que vem ligada por padrão."}},
+"OmniRoute":{
+ yes:"Você usa vários provedores e quer fallback quando a cota acaba, ou reduzir custo.",
+ no:"Se um único provedor atende e você não quer guardar várias chaves num gateway local.",
+ ex:{t:"Não ficar parado quando a cota do provedor principal acaba",
+  s:["Conecte um provedor no painel do OmniRoute","Aponte a ferramenta para http://localhost:20128/v1 com o modelo auto"],
+  r:"Se um alvo falhar ou ficar sem cota, a requisição passa ao próximo saudável, conforme a estratégia de roteamento escolhida."}},
+"godly":{
+ yes:"No início do design, para definir direção visual com referências reais.",
+ no:"Copiar um site inteiro: use só como inspiração de estrutura e hierarquia.",
+ ex:{t:"Landing page de um SaaS",
+  s:["(anexe prints de 2 ou 3 sites do godly.design)","Reproduza a estrutura e a hierarquia do hero e da seção de preços, mas com minha marca, minhas cores e meus textos"],
+  r:"O agente replica o esqueleto visual (espaçamento, ordem das seções, tipografia) com o seu conteúdo. Não copie textos, imagens ou logos."}},
+"transitions":{
+ yes:"Interface pronta que precisa de animações consistentes e acessíveis; auditoria de motion em CI.",
+ no:"Backends e APIs.",
+ ex:{t:"Auditar o motion de um projeto existente",
+  s:["npx transitions-agent"],
+  r:"Você recebe uma nota de 0 a 100 e os problemas encontrados (transition: all, durações fixas, falta de prefers-reduced-motion). As correções vêm como diff para aprovar."}},
+"animos":{
+ yes:"Marketing: mostrar o app em vídeo de lançamento.",
+ no:"Não consegui confirmar o que o produto faz além do título da página.",
+ ex:{t:"Vídeo de lançamento",
+  s:["Abra animos.app e teste com prints do seu app"],
+  r:"Sem exemplo confirmado: a página não trouxe detalhes. Avalie diretamente no site."}},
+"deck.gallery":{
+ yes:"Preparar pitch, relatório ou guia de marca e precisar de referências de layout.",
+ no:"Se precisa do arquivo completo dos decks: grande parte é do plano Pro.",
+ ex:{t:"Pitch deck para investidores",
+  s:["Filtrar a categoria Pitch e salvar 3 referências","Monte o roteiro de slides de um pitch de 10 slides para o meu produto, inspirado na estrutura dessas referências"],
+  r:"Você usa as referências para estrutura e ritmo. O conteúdo e o design finais devem ser seus."}}
+};
+
+const SITU = [
+["Tenho uma ideia vaga e quero começar do zero","mattpocock: /grill-with-docs ou Superpowers: brainstorming","Fecha dúvidas e define linguagem do domínio antes de qualquer código."],
+["Feature clara em sistema que já existe","agent-skills: /spec → /plan → /build","Processo curto com TDD e commit por tarefa."],
+["Bug difícil de reproduzir","mattpocock: diagnosing-bugs ou Superpowers: systematic-debugging","Exigem reproduzir primeiro e criar teste de regressão."],
+["A IA inventa funções ou usa API antiga","Context7 (“use context7”)","O agente lê a documentação da versão certa."],
+["O agente mexe em coisas que não pedi","Karpathy skills no CLAUDE.md","Força mudanças cirúrgicas e critérios verificáveis."],
+["Tela feia ou genérica","godly.design + 21st.dev MCP","Referência visual real e componentes prontos."],
+["Interface sem animação ou com animação ruim","transitions.dev","Transições prontas e auditoria de acessibilidade."],
+["Vou lançar na semana que vem","security-audit + Strix + /webperf + /ship","Código, app rodando, performance e checklist."],
+["Preciso decidir arquitetura ou revisar código crítico","claude-octopus: /octo:debate e /octo:review","Segunda opinião de outros modelos."],
+["Perco o contexto entre sessões","claude-mem ou mattpocock: handoff","Memória persistente ou resumo para outro agente."],
+["Estou gastando muitos tokens","Headroom e OmniRoute","Compressão de contexto e roteamento para modelos mais baratos."],
+["Acabei de abrir um projeto e não sei o que configurar","claude-code-setup","Recomenda hooks, MCPs e subagentes para o projeto."],
+["Preciso apresentar o projeto","deck.gallery e animos.app","Referências de layout e vídeo de lançamento."]
+];
+
+const PLAYS = [
+{t:"1. Projeto novo, do zero à primeira versão", why:"Quando você só tem a ideia.", steps:[
+ ["Configure o ambiente uma vez","claude plugin install mattpocock-skills@claude-plugins-official","Instale também agent-skills e Context7 (veja cada card). Peça “recommend automations for this project” para o claude-code-setup."],
+ ["Alinhe o problema antes de codar","/grill-with-docs Quero um sistema de [descreva o seu]","Responda às perguntas. O agente cria o glossário e as ADRs. Esta etapa evita o retrabalho mais caro."],
+ ["Escreva a spec e o plano","/spec [resumo do que ficou decidido]","Leia e corrija a spec. Depois rode /plan e confirme que as tarefas são pequenas."],
+ ["Defina o visual","Busque no 21st componentes de [dashboard / pricing / tabela] e adapte às minhas cores","Antes, escolha 2 ou 3 referências no godly.design."],
+ ["Implemente","/build","Mantenha o Context7 ativo (“use context7”). Use /build auto só quando confiar no plano."],
+ ["Revise e valide","/review","Rode também /test e abra o app para ver se funciona de verdade."]]},
+{t:"2. Corrigir um bug sem criar outros", why:"Bug em sistema que já está no ar.", steps:[
+ ["Peça para reproduzir primeiro","Reproduza este bug com um teste que falha: [descrição, passos, mensagem de erro]","Com Karpathy skills ou diagnosing-bugs, o agente deve criar o teste antes de corrigir."],
+ ["Corrija o mínimo","Corrija fazendo o teste passar, sem alterar mais nada","Se ele apontar código morto, ele só deve mencionar."],
+ ["Revise o diff","/review","Diff pequeno é bom sinal. Rode toda a suíte de testes."],
+ ["Registre","Resuma a causa raiz em uma ADR ou na descrição do PR","Com a skill pr, o corpo do PR traz evidências e análise de risco."]]},
+{t:"3. Adicionar uma feature em sistema existente", why:"Você já tem código, testes e padrões.", steps:[
+ ["Especifique","/spec [feature em 2 ou 3 frases, com critérios de aceite]","Inclua o que NÃO faz parte."],
+ ["Planeje em fatias pequenas","/plan","Cada tarefa deve poder ser testada e revertida sozinha."],
+ ["Implemente com TDD","/build","Se o agente usar uma biblioteca, peça “use context7”."],
+ ["Segurança do que mudou","security audit the changes in [pasta ou módulo]","Dê atenção especial a autenticação, permissões e entrada de dados."],
+ ["Entregue","/ship","Siga o checklist: rollout em etapas e plano de rollback."]]},
+{t:"4. Antes de colocar em produção", why:"Checklist de segurança e confiabilidade.", steps:[
+ ["Audite o código","security audit this codebase","Corrija os confirmados. Trate needs_validation como pendência real, não ignore."],
+ ["Repita a auditoria","security audit this codebase","Uma execução não acha tudo. Compare com o relatório anterior."],
+ ["Pentest em staging (com autorização)","strix --target https://staging.seudominio.com","Nunca em produção com dados reais. Use usuário de teste."],
+ ["Performance","/webperf","Meça antes de otimizar (Core Web Vitals)."],
+ ["Automatize em CI","strix --target ./app -n","O código de saída diferente de zero bloqueia o pipeline."],
+ ["Lance com rede de proteção","/ship","Rollout gradual, monitoramento e rollback testado. Revise você mesmo login, pagamento e permissões."]]},
+{t:"5. Deixar a interface bonita e profissional", why:"Do protótipo feio ao produto polido.", steps:[
+ ["Colete referências","godly.design: escolha 2 ou 3 sites e tire print","Anote o que gosta: tipografia, espaçamento, ordem das seções."],
+ ["Replique a estrutura","Reproduza a estrutura e a hierarquia deste print com minha marca e minhas cores","Anexe os prints. Não copie textos nem imagens."],
+ ["Troque por componentes prontos","Busque no 21st um componente de [tipo] e adapte","Revise contraste e navegação por teclado."],
+ ["Adicione movimento","npx transitions-agent","Corrija transition: all e adicione prefers-reduced-motion."],
+ ["Conferir","/review","Teste em celular, tema escuro e com zoom de 200%."]]}
+];
+
+const PRIO = {3:["Prioridade alta","p3"],2:["Prioridade média","p2"],1:["Opcional",""]};
+const cats = ["Todas", ...new Set(TOOLS.map(t=>t.cat))];
+let cat = "Todas";
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function render(){
+  const q = $("q").value.trim().toLowerCase();
+  const list = TOOLS.filter(t => (cat==="Todas"||t.cat===cat) &&
+    (!q || (t.name+t.desc+t.use+t.cat+t.more.join(" ")).toLowerCase().includes(q)));
+  $("grid").innerHTML = list.map(t => {
+    const p = PRIO[t.prio];
+    const cmds = t.install.map(c => `<div class="cmd">${esc(c)}<button type="button" data-copy="${esc(c)}">Copiar</button></div>`).join("");
+    const k = Object.keys(EXTRA).find(k => t.name.startsWith(k));
+    const x = k ? EXTRA[k] : null;
+    const when = x ? `<div class="when"><div class="yes"><b>Use quando</b>${esc(x.yes)}</div><div class="no"><b>Evite quando</b>${esc(x.no)}</div></div>` : "";
+    const ex = x ? `<div class="ex"><div class="h">Exemplo: ${esc(x.ex.t)}</div>${x.ex.s.map(c=>`<div class="cmd">${esc(c)}<button type="button" data-copy="${esc(c)}">Copiar</button></div>`).join("")}<div class="res">${esc(x.ex.r)}</div></div>` : "";
+    const more = t.more.length ? `<details><summary>Detalhes</summary><ul>${t.more.map(m=>`<li>${esc(m)}</li>`).join("")}</ul></details>` : "";
+    return `<article class="card">
+      <h3><a href="${t.url}" target="_blank" rel="noopener">${esc(t.name)}</a></h3>
+      <div class="meta"><span class="tag">${esc(t.cat)}</span><span class="tag ${p[1]}">${p[0]}</span></div>
+      <p>${esc(t.desc)}</p>
+      <div class="use"><b>Como usar:</b> ${esc(t.use)}</div>
+      ${when}
+      ${cmds ? `<div class="h" style="font-size:12px;color:var(--muted);text-transform:uppercase">Instalação</div>${cmds}` : ""}
+      ${ex}
+      ${t.warn?`<div class="warn">${esc(t.warn)}</div>`:""}
+      ${more}
+    </article>`;
+  }).join("");
+  $("empty").style.display = list.length ? "none" : "block";
+}
+
+$("situ").innerHTML = SITU.map(r=>`<tr><td>${esc(r[0])}</td><td><b>${esc(r[1])}</b></td><td>${esc(r[2])}</td></tr>`).join("");
+$("plays").innerHTML = PLAYS.map((p,i)=>`<details class="play"${i===0?" open":""}><summary>${esc(p.t)}</summary><p class="why">${esc(p.why)}</p><ol>${p.steps.map(s=>`<li><b>${esc(s[0])}</b><div class="cmd">${esc(s[1])}<button type="button" data-copy="${esc(s[1])}">Copiar</button></div><div class="why">${esc(s[2])}</div></li>`).join("")}</ol></details>`).join("");
+document.addEventListener("click", e => {
+  const b = e.target.closest("#plays [data-copy]"); if(!b) return;
+  navigator.clipboard.writeText(b.dataset.copy).then(()=>{ b.textContent="Copiado"; setTimeout(()=>b.textContent="Copiar",1200); });
+});
+$("chips").innerHTML = cats.map(c=>`<button class="chip" type="button" data-cat="${c}" aria-pressed="${c===cat}">${c}</button>`).join("");
+$("chips").addEventListener("click", e => {
+  const b = e.target.closest("[data-cat]"); if(!b) return;
+  cat = b.dataset.cat;
+  document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x.dataset.cat===cat));
+  render();
+});
+$("q").addEventListener("input", render);
+$("grid").addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]"); if(!b) return;
+  navigator.clipboard.writeText(b.dataset.copy).then(()=>{ b.textContent="Copiado"; setTimeout(()=>b.textContent="Copiar",1200); });
+});
+
+/* checklist */
+let saved = {};
+try { saved = JSON.parse(localStorage.getItem("guia-check")||"{}"); } catch(e){}
+$("check").innerHTML = CHECK.map((c,i)=>`<li class="${saved[i]?"done":""}"><label><input type="checkbox" data-i="${i}" ${saved[i]?"checked":""}>${esc(c)}</label></li>`).join("");
+$("check").addEventListener("change", e => {
+  const i = e.target.dataset.i; if(i===undefined) return;
+  saved[i] = e.target.checked;
+  e.target.closest("li").classList.toggle("done", e.target.checked);
+  try { localStorage.setItem("guia-check", JSON.stringify(saved)); } catch(e){}
+});
+
+/* tema */
+const root = document.documentElement;
+let t0 = null; try { t0 = localStorage.getItem("guia-theme"); } catch(e){}
+if(!t0) t0 = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+root.dataset.theme = t0;
+$("theme").addEventListener("click", () => {
+  const n = root.dataset.theme==="dark" ? "light" : "dark";
+  root.dataset.theme = n;
+  try { localStorage.setItem("guia-theme", n); } catch(e){}
+});
+
+render();
+</script>
+</body>
+</html>
